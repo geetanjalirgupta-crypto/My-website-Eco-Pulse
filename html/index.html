@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Pulse — Enterprise Transportation Carbon Intelligence Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/tailwind-config.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900 bg-offWhite">
+
+    <!-- Top Environmental Telemetry Bar (Professional Dark Navy & Blue Accent) -->
+    <div class="bg-navyDark text-slate-300 border-b border-navySub/80 text-[11px] py-1.5 px-4 font-mono-num">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-corpBlue animate-pulse-halo-blue"></span>
+                    <span class="font-bold text-white tracking-wider">ECO PULSE TELEMETRY</span>
+                </span>
+                <span class="hidden sm:inline text-slate-600">|</span>
+                <span class="hidden sm:inline text-slate-400">Carbon Intensity: <strong class="text-pulseSky">0.082 kg CO₂e/km</strong></span>
+                <span class="hidden md:inline text-slate-600">|</span>
+                <span class="hidden md:inline text-slate-400">Transit Clean Sync: <strong class="text-blue-400">78.4% Efficiency</strong></span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="topZoneTag" class="text-slate-400">Region: <strong class="text-white">Mumbai Metropolitan</strong></span>
+                <button onclick="handleLoadDataClick()" class="text-pulseSky hover:text-white font-semibold underline decoration-dotted transition-colors flex items-center space-x-1">
+                    <i data-lucide="database" class="w-3 h-3"></i>
+                    <span data-i18n="top_load_data">Load Data</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-borderSlate shadow-xs transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Brand with Living Blue Pulse Indicator -->
+                <div class="flex items-center space-x-3.5 cursor-pointer group" onclick="switchView('home')">
+                    <!-- Brand Glyph in Professional Deep Navy & Blue Pulse -->
+                    <div class="w-11 h-11 rounded-xl bg-navyDark flex items-center justify-center shadow-sm border border-slate-700/60 relative overflow-hidden group-hover:border-corpBlue transition-all">
+                        <svg class="w-6 h-6 text-corpBlue transition-transform group-hover:scale-105" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            <circle cx="12" cy="12" r="2.2" fill="#2563EB" stroke="none" class="animate-ping" style="transform-origin: center; animation-duration: 2s;"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-tr from-corpBlue/20 to-transparent pointer-events-none"></div>
+                    </div>
+                    
+                    <!-- Brand Typography & Real-Time Living Pulse Indicator -->
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-extrabold tracking-tight text-navyHeading font-heading">Eco<span class="text-corpBlue">Pulse</span></span>
+                            <!-- Dynamic Pulse Indicator Next to Logo -->
+                            <div class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full telemetry-badge-blue text-[10px] font-bold text-corpBlue font-mono-num" title="Living Carbon Pulse telemetry is active">
+                                <span class="w-1.5 h-1.5 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                                <span class="tracking-wide">PULSE ACTIVE</span>
+                            </div>
+                        </div>
+                        <span class="block text-[10px] uppercase font-semibold text-mutedSlate tracking-wider" data-i18n="tagline_sub">Transportation Carbon Intelligence</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Primary Navigation Bar in Header (All Menus in Top Header) -->
+                <nav class="hidden lg:flex items-center space-x-1 xl:space-x-1.5">
+                    <button onclick="switchView('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="home" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="nav_home">Home</span>
+                    </button>
+                    <button onclick="switchView('calculator')" id="nav-calculator" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-mutedSlate hover:text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="nav_calculator">Calculator</span>
+                    </button>
+                    <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-mutedSlate hover:text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="nav_dashboard">Dashboard</span>
+                    </button>
+                    <button onclick="switchView('trips')" id="nav-trips" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-mutedSlate hover:text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="list-ordered" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="nav_trips">Trip History</span>
+                    </button>
+                    <button onclick="switchView('recommendations')" id="nav-recommendations" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-mutedSlate hover:text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                        <span data-i18n="nav_recommendations">Insights</span>
+                    </button>
+                    <button onclick="switchView('community')" id="nav-community" class="nav-btn px-3 py-2 rounded-lg text-xs font-semibold text-mutedSlate hover:text-navyHeading hover:bg-lightGrey transition-all flex items-center space-x-1.5">
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-corpBlue"></i>
+                        <span data-i18n="nav_community">Community Chat</span>
+                        <span class="w-2 h-2 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                    </button>
+                </nav>
+
+                <!-- Header Actions: Clean "Load Data", Language Dropdown, Sign In -->
+                <div class="hidden sm:flex items-center space-x-2.5">
+                    
+                    <!-- Clean Corporate Blue "Load Data" Button -->
+                    <button onclick="handleLoadDataClick()" class="bg-blueTint hover:bg-blue-100 text-corpBlueDark border border-blueBorder px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shadow-2xs">
+                        <i data-lucide="database" class="w-3.5 h-3.5 text-corpBlue"></i>
+                        <span data-i18n="btn_load_data">Load Data</span>
+                    </button>
+
+                    <!-- Language Selector -->
+                    <div class="relative inline-flex items-center">
+                        <i data-lucide="globe" class="w-3.5 h-3.5 absolute left-2.5 text-mutedSlate pointer-events-none"></i>
+                        <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-lightGrey border border-borderSlate text-navyHeading text-xs font-semibold rounded-xl pl-8 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-corpBlue/30 cursor-pointer appearance-none">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी (Hindi)</option>
+                            <option value="mr">मराठी (Marathi)</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                        </select>
+                    </div>
+
+                    <!-- Resident Account Sign In Button -->
+                    <button onclick="openAuthModal()" id="authButton" class="bg-navyHeading hover:bg-navyDark text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center space-x-1.5">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span id="authButtonText" data-i18n="auth_login">Sign In</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Hamburger Button -->
+                <div class="flex items-center space-x-2 lg:hidden">
+                    <button onclick="handleLoadDataClick()" class="bg-blueTint text-corpBlueDark border border-blueBorder px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+                        <span data-i18n="btn_load_data">Load Data</span>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="p-2 rounded-lg text-navyHeading hover:bg-lightGrey focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-borderSlate bg-white px-4 pt-3 pb-5 space-y-2 shadow-lg">
+            <div class="grid grid-cols-2 gap-2 pb-2 border-b border-borderSlate">
+                <select id="languageSelectMobile" onchange="changeLanguage(this.value)" class="bg-lightGrey border border-borderSlate text-navyHeading text-xs font-semibold rounded-lg px-2.5 py-2">
+                    <option value="en">English</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                    <option value="mr">मराठी (Marathi)</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                </select>
+                <button onclick="openAuthModal(); toggleMobileMenu();" class="bg-navyHeading text-white px-3 py-2 rounded-lg text-xs font-semibold text-center">
+                    Resident Portal
+                </button>
+            </div>
+            <button onclick="switchView('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey" data-i18n="nav_home">Home</button>
+            <button onclick="switchView('calculator'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey" data-i18n="nav_calculator">Calculator</button>
+            <button onclick="switchView('dashboard'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey" data-i18n="nav_dashboard">Dashboard</button>
+            <button onclick="switchView('trips'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey" data-i18n="nav_trips">Trip History</button>
+            <button onclick="switchView('recommendations'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey" data-i18n="nav_recommendations">Insights</button>
+            <button onclick="switchView('community'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-navyHeading hover:bg-lightGrey flex items-center justify-between" data-i18n="nav_community">
+                <span>Community Chat</span>
+                <span class="text-[10px] bg-blue-100 text-corpBlueDark px-2 py-0.5 rounded-full font-bold">Active</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Telemetry Data Stream Status Banner -->
+    <div id="dataStreamBanner" class="hidden bg-navyDark text-white px-4 py-3 text-xs font-medium border-b border-navySub shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
+            <div class="flex items-center space-x-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-corpBlue animate-pulse-halo-blue"></span>
+                <span data-i18n="data_banner_text">Telemetry Feed Synchronized: Multi-day verified transportation records active. Personal custom saves are kept isolated.</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="clearLoadedData()" class="text-slate-300 hover:text-rose-400 text-xs font-semibold underline decoration-dotted transition-colors" data-i18n="data_reset_btn">Clear Loaded Data</button>
+                <button onclick="toggleDataBanner(false)" class="text-slate-400 hover:text-white text-base leading-none">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ============================================================= -->
+        <!-- 1. HOME VIEW -->
+        <!-- ============================================================= -->
+        <section id="view-home" class="space-y-16">
+            
+            <!-- Hero Section with Professional Blue Palette -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-4 pb-6">
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Professional Climate-Tech Hero Badge -->
+                    <div class="inline-flex items-center space-x-2.5 bg-white border border-borderSlate px-3.5 py-1.5 rounded-full text-xs font-medium text-navyHeading shadow-2xs">
+                        <span class="w-2 h-2 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                        <span data-i18n="hero_badge" class="font-semibold">Enterprise Carbon Telemetry Platform</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="text-corpBlue font-mono-num font-semibold">ISO-14064 Verified</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-navyHeading">
+                        <span data-i18n="hero_title_1">The Living Pulse of</span><br>
+                        <span class="bg-gradient-to-r from-corpBlueDark via-corpBlue to-pulseCyan bg-clip-text text-transparent" data-i18n="hero_title_2">Low-Carbon Commuting.</span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-mutedSlate leading-relaxed max-w-2xl" data-i18n="hero_desc">
+                        Eco Pulse provides precision transportation carbon telemetry for urban residents and enterprises. Calculate multi-modal commute impact, monitor real-time emission rhythms, connect with regional commuters, and accelerate municipal decarbonization.
+                    </p>
+
+                    <!-- CTA Actions in Professional Blue -->
+                    <div class="flex flex-wrap gap-3.5 pt-2">
+                        <button onclick="switchView('calculator')" class="bg-navyHeading hover:bg-navyDark text-white font-semibold px-6 py-3.5 rounded-xl shadow-sm transition-all flex items-center space-x-2 text-sm">
+                            <i data-lucide="calculator" class="w-4 h-4 text-pulseSky"></i>
+                            <span data-i18n="btn_calculate">Calculate My Footprint</span>
+                        </button>
+                        <button onclick="switchView('dashboard')" class="bg-white hover:bg-lightGrey text-navyHeading border border-borderSlate font-semibold px-6 py-3.5 rounded-xl shadow-2xs transition-all flex items-center space-x-2 text-sm">
+                            <i data-lucide="activity" class="w-4 h-4 text-corpBlue"></i>
+                            <span data-i18n="btn_dashboard">View Live Dashboard</span>
+                        </button>
+                        <button onclick="handleLoadDataClick()" class="bg-blueTint hover:bg-blue-100 text-corpBlueDark border border-blueBorder font-semibold px-6 py-3.5 rounded-xl shadow-2xs transition-all flex items-center space-x-2 text-sm">
+                            <i data-lucide="database" class="w-4 h-4 text-corpBlue"></i>
+                            <span data-i18n="btn_load_data">Load Data</span>
+                        </button>
+                    </div>
+
+                    <!-- Key Platform Metrics -->
+                    <div class="grid grid-cols-3 gap-6 pt-4 border-t border-borderSlate">
+                        <div>
+                            <div class="text-2xl font-bold text-navyHeading font-mono-num">12+</div>
+                            <div class="text-xs text-mutedSlate">Modal Categories</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-corpBlue font-mono-num">-42%</div>
+                            <div class="text-xs text-mutedSlate">Avg Commute Shift</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-navyHeading font-mono-num">100%</div>
+                            <div class="text-xs text-mutedSlate">Transparent Factors</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Climate-Tech Pulse Telemetry Card with Blue Glow -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white border border-borderSlate rounded-3xl p-6 sm:p-7 shadow-sm relative overflow-hidden space-y-5">
+                        
+                        <!-- Header with subtle blue pulse indicator -->
+                        <div class="flex items-center justify-between pb-4 border-b border-borderSlate">
+                            <div class="flex items-center space-x-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-corpBlue animate-pulse-halo-blue"></span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-navyHeading font-mono-num" data-i18n="pulse_card_title">Real-Time Commute Pulse</span>
+                            </div>
+                            <span class="text-[10px] bg-blueTint text-corpBlueDark font-mono-num font-semibold px-2.5 py-1 rounded-md border border-blueBorder">Telemetry Active</span>
+                        </div>
+
+                        <!-- Real-Time Waveform Canvas in Dark Navy with Electric Blue Wave -->
+                        <div class="bg-navyDark rounded-2xl p-4 border border-navySub text-white relative">
+                            <div class="flex items-center justify-between text-[11px] text-slate-400 pb-2">
+                                <span>Transit Frequency Rhythm</span>
+                                <span class="text-pulseSky font-mono-num">72 BPM Sync</span>
+                            </div>
+                            <canvas id="homePulseCanvas" width="380" height="90" class="w-full h-24 rounded-lg block"></canvas>
+                            <div class="pt-2 flex items-center justify-between text-[10px] font-mono-num text-slate-400">
+                                <span>Regional Emission Wave</span>
+                                <span class="text-slate-300">ISO-14064 Factor Hash</span>
+                            </div>
+                        </div>
+
+                        <!-- Live Telemetry KPI Metrics -->
+                        <div class="grid grid-cols-2 gap-3.5 font-mono-num">
+                            <div class="bg-lightGrey p-4 rounded-xl border border-borderSlate">
+                                <span class="text-[10px] text-mutedSlate block uppercase font-sans font-semibold">Weekly Telemetry</span>
+                                <span class="text-2xl font-extrabold text-navyHeading mt-1 block">18.4 <span class="text-xs font-normal text-mutedSlate font-sans">kg CO₂e</span></span>
+                            </div>
+                            <div class="bg-lightGrey p-4 rounded-xl border border-borderSlate">
+                                <span class="text-[10px] text-mutedSlate block uppercase font-sans font-semibold">Clean Transit Share</span>
+                                <span class="text-2xl font-extrabold text-corpBlue mt-1 block">68.2%</span>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Link -->
+                        <div class="pt-1 flex items-center justify-between text-xs">
+                            <button onclick="switchView('dashboard')" class="text-corpBlue hover:text-corpBlueDark font-bold flex items-center space-x-1 transition-colors">
+                                <span data-i18n="preview_view_full">Open Dashboard Metrics</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <button onclick="switchView('community')" class="text-navyHeading hover:text-corpBlue font-semibold flex items-center space-x-1 transition-colors">
+                                <i data-lucide="users" class="w-3.5 h-3.5 text-corpBlue"></i>
+                                <span>Area Community</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Feature Highlights -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="bg-white p-7 rounded-2xl border border-borderSlate shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all space-y-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-blueTint text-corpBlue flex items-center justify-center font-bold">
+                        <i data-lucide="activity" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-navyHeading" data-i18n="feat_1_title">Carbon Pulse Engine</h3>
+                    <p class="text-xs sm:text-sm text-mutedSlate leading-relaxed" data-i18n="feat_1_desc">
+                        Accurately compute emissions across 12+ transport modes including local trains, metro, buses, EVs, and auto-rickshaws with passenger occupancy factors.
+                    </p>
+                </div>
+
+                <div class="bg-white p-7 rounded-2xl border border-borderSlate shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all space-y-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-blueTint text-corpBlue flex items-center justify-center font-bold">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-navyHeading" data-i18n="feat_2_title">Area Commuter Network</h3>
+                    <p class="text-xs sm:text-sm text-mutedSlate leading-relaxed" data-i18n="feat_2_desc">
+                        Connect with neighbors in your specific municipal area to coordinate carpools, share rapid transit updates, and cut collective emissions.
+                    </p>
+                </div>
+
+                <div class="bg-white p-7 rounded-2xl border border-borderSlate shadow-2xs hover:shadow-xs hover:border-slate-300 transition-all space-y-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-blueTint text-corpBlue flex items-center justify-center font-bold">
+                        <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-navyHeading" data-i18n="feat_3_title">Enterprise Export & Compliance</h3>
+                    <p class="text-xs sm:text-sm text-mutedSlate leading-relaxed" data-i18n="feat_3_desc">
+                        Export complete journey records to CSV for database audit (SQLite/MySQL schema compliant) with ISO-14064 verifiable emission calculations.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ============================================================= -->
+            <!-- VEHICLE-WISE CARBON EMISSION COMPARISON TABLE (HOMEPAGE) -->
+            <!-- ============================================================= -->
+            <div id="vehicle-comparison-section" class="bg-white border border-borderSlate rounded-3xl p-6 sm:p-10 shadow-2xs space-y-8">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-borderSlate pb-6">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center space-x-2 bg-blueTint border border-blueBorder px-3.5 py-1.5 rounded-full text-xs font-semibold text-corpBlueDark">
+                            <span class="w-2 h-2 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                            <span data-i18n="cmp_badge">VEHICLE EMISSION BENCHMARK</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading font-heading" data-i18n="cmp_heading">
+                            Vehicle-Wise Carbon Emission Comparison
+                        </h2>
+                        <p class="text-xs sm:text-sm text-mutedSlate max-w-2xl" data-i18n="cmp_sub">
+                            Calculate and compare estimated greenhouse gas emissions across 7 transportation modes for any specific journey distance. Discover the lowest-carbon way to travel.
+                        </p>
+                    </div>
+
+                    <!-- Quick Summary Badge -->
+                    <div class="bg-lightGrey border border-borderSlate px-4 py-3 rounded-2xl flex items-center space-x-3 shrink-0">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                            <i data-lucide="leaf" class="w-4 h-4"></i>
+                        </div>
+                        <div class="text-xs">
+                            <span class="block text-[10px] uppercase font-bold text-mutedSlate tracking-wider font-mono-num">Clean Transit Benchmark</span>
+                            <span class="font-bold text-navyHeading">Formula: km × Factor ÷ 1000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Controls Box: Locations, Distance, Occupancy & Quick Presets -->
+                <div class="bg-lightGrey border border-borderSlate rounded-2xl p-5 sm:p-6 space-y-4">
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-corpBlue"></i>
+                            <span class="text-xs font-bold text-navyHeading uppercase tracking-wider font-mono-num" data-i18n="cmp_params_title">Journey Parameters</span>
+                        </div>
+                        <span class="text-[11px] text-mutedSlate">Dynamic real-time calculation</span>
+                    </div>
+
+                    <!-- Input Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Origin Location -->
+                        <div class="space-y-1.5">
+                            <label for="cmpStartLoc" class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="cmp_label_origin">Origin / Starting Place</label>
+                            <div class="relative">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-mutedSlate absolute left-3.5 top-3.5 pointer-events-none"></i>
+                                <input type="text" id="cmpStartLoc" value="Andheri Station" placeholder="e.g. Origin Point" oninput="handleCompareInputChange()" class="w-full bg-white border border-borderSlate rounded-xl pl-10 pr-3 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Destination Location -->
+                        <div class="space-y-1.5">
+                            <label for="cmpEndLoc" class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="cmp_label_dest">Destination</label>
+                            <div class="relative">
+                                <i data-lucide="navigation" class="w-4 h-4 text-mutedSlate absolute left-3.5 top-3.5 pointer-events-none"></i>
+                                <input type="text" id="cmpEndLoc" value="Churchgate" placeholder="e.g. Destination Point" oninput="handleCompareInputChange()" class="w-full bg-white border border-borderSlate rounded-xl pl-10 pr-3 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <!-- Travel Distance (km) -->
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <label for="cmpDistance" class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="cmp_label_dist">Travel Distance (km)</label>
+                                <span class="text-[10px] text-corpBlue font-mono-num font-semibold">Manual / Auto</span>
+                            </div>
+                            <div class="relative">
+                                <i data-lucide="milestone" class="w-4 h-4 text-corpBlue absolute left-3.5 top-3.5 pointer-events-none"></i>
+                                <input type="number" step="0.1" min="0.1" id="cmpDistance" value="22" placeholder="Distance in km" oninput="handleCompareInputChange()" class="w-full bg-white border border-borderSlate rounded-xl pl-10 pr-3 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-mono-num font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Passenger Occupancy (For Carpool / Per Passenger calculation) -->
+                        <div class="space-y-1.5">
+                            <label for="cmpOccupancy" class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="cmp_label_pax">Vehicle Occupancy</label>
+                            <div class="relative">
+                                <i data-lucide="users" class="w-4 h-4 text-mutedSlate absolute left-3.5 top-3.5 pointer-events-none"></i>
+                                <select id="cmpOccupancy" onchange="handleCompareInputChange()" class="w-full bg-white border border-borderSlate rounded-xl pl-10 pr-3 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all cursor-pointer font-medium appearance-none">
+                                    <option value="1">1 Passenger (Solo Driver)</option>
+                                    <option value="2">2 Passengers (Shared)</option>
+                                    <option value="3">3 Passengers (Carpool)</option>
+                                    <option value="4">4 Passengers (Full Carpool)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Quick Preset Corridors -->
+                    <div class="pt-2 border-t border-borderSlate flex flex-wrap items-center gap-2">
+                        <span class="text-[11px] font-bold text-navyHeading uppercase tracking-wider font-mono-num mr-1" data-i18n="cmp_presets_label">Quick Corridors:</span>
+                        <button type="button" onclick="applyComparePreset('Andheri Station', 'Churchgate', 22)" class="px-3 py-1 bg-white border border-borderSlate hover:border-corpBlue rounded-lg text-[11px] font-semibold text-navyHeading transition-all shadow-2xs hover:bg-blue-50">Suburban Rail Corridor (22 km)</button>
+                        <button type="button" onclick="applyComparePreset('Bandra Kurla Complex', 'Worli Hub', 14)" class="px-3 py-1 bg-white border border-borderSlate hover:border-corpBlue rounded-lg text-[11px] font-semibold text-navyHeading transition-all shadow-2xs hover:bg-blue-50">BKC → Worli (14 km)</button>
+                        <button type="button" onclick="applyComparePreset('Powai Lake', 'BKC Office', 16)" class="px-3 py-1 bg-white border border-borderSlate hover:border-corpBlue rounded-lg text-[11px] font-semibold text-navyHeading transition-all shadow-2xs hover:bg-blue-50">Powai → BKC (16 km)</button>
+                        <button type="button" onclick="applyComparePreset('Hinjawadi Phase 1', 'Baner', 9)" class="px-3 py-1 bg-white border border-borderSlate hover:border-corpBlue rounded-lg text-[11px] font-semibold text-navyHeading transition-all shadow-2xs hover:bg-blue-50">Hinjawadi → Baner (9 km)</button>
+                        <button type="button" onclick="applyComparePreset('Greenway Park', 'Local Market', 2.5)" class="px-3 py-1 bg-white border border-borderSlate hover:border-corpBlue rounded-lg text-[11px] font-semibold text-navyHeading transition-all shadow-2xs hover:bg-blue-50">Short Urban Trip (2.5 km)</button>
+                    </div>
+
+                    <!-- Input Validation Alert Message -->
+                    <div id="cmpValidationError" class="hidden bg-rose-50 border border-rose-200 text-rose-700 px-4 py-2.5 rounded-xl text-xs flex items-center space-x-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 text-rose-600"></i>
+                        <span id="cmpValidationText">Please enter a valid travel distance greater than 0 km to calculate vehicle emissions.</span>
+                    </div>
+
+                </div>
+
+                <!-- Live Route & Carbon Delta Banner -->
+                <div class="bg-navyDark text-white p-4 sm:p-5 rounded-2xl border border-navySub flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-corpBlue/20 text-pulseSky border border-corpBlue/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="git-compare" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-[10px] font-mono-num uppercase tracking-wider text-pulseSky font-semibold">Active Route Assessment</span>
+                                <span class="text-slate-500">•</span>
+                                <span id="cmpActiveDistanceBadge" class="text-xs font-mono-num text-slate-300 font-bold">22.0 km</span>
+                            </div>
+                            <div id="cmpActiveRouteTitle" class="text-sm sm:text-base font-bold text-white">
+                                Andheri Station → Churchgate
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carbon Delta Savings Callout -->
+                    <div class="flex items-center space-x-3 bg-navySub/80 px-4 py-2.5 rounded-xl border border-slate-700 font-mono-num">
+                        <div class="text-right">
+                            <span class="block text-[10px] uppercase text-slate-400 font-sans font-semibold">Potential CO₂e Saved</span>
+                            <span id="cmpMaxSavings" class="text-lg font-extrabold text-emerald-400">4.18 kg CO₂e</span>
+                        </div>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-sans font-bold border border-emerald-500/30">
+                            -100% vs Solo Car
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="overflow-hidden rounded-2xl border border-borderSlate shadow-2xs">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-lightGrey border-b border-borderSlate text-[11px] uppercase tracking-wider text-navyHeading font-bold">
+                                    <th class="p-4" data-i18n="cmp_th_vehicle">Vehicle Type</th>
+                                    <th class="p-4 font-mono-num" data-i18n="cmp_th_dist">Travel Distance (km)</th>
+                                    <th class="p-4" data-i18n="cmp_th_emissions">Estimated CO₂ Emissions (kg CO₂e)</th>
+                                    <th class="p-4" data-i18n="cmp_th_pax">Emissions per Passenger</th>
+                                    <th class="p-4" data-i18n="cmp_th_impact">Relative Environmental Impact</th>
+                                    <th class="p-4 text-right" data-i18n="cmp_th_action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cmpTableBody" class="divide-y divide-borderSlate text-xs text-navyHeading">
+                                <!-- Dynamically populated by updateVehicleComparison() -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Methodology, Emission Factors & Real-World Assumption Documentation -->
+                <div class="bg-lightGrey/80 border border-borderSlate rounded-2xl p-5 sm:p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="book-open" class="w-4 h-4 text-corpBlue"></i>
+                            <h4 class="font-bold text-navyHeading text-xs sm:text-sm uppercase tracking-wider font-mono-num" data-i18n="cmp_doc_title">
+                                Calculation Formula, Emission Factors & Documentation
+                            </h4>
+                        </div>
+                        <span class="text-[10px] bg-white text-corpBlueDark px-2 py-1 rounded-md border border-borderSlate font-mono-num font-semibold">
+                            ISO-14064 Compliant
+                        </span>
+                    </div>
+
+                    <!-- Formula Highlight Card -->
+                    <div class="bg-white border border-borderSlate p-3.5 rounded-xl text-xs space-y-1">
+                        <span class="font-bold text-navyHeading block font-mono-num">
+                            Total estimated emissions (kg CO₂e) = Distance (km) × Emission factor (g CO₂e/passenger-km) ÷ 1000
+                        </span>
+                        <p class="text-mutedSlate text-[11px]">
+                            Each emission factor represents lifecycle or operational grams of carbon dioxide equivalent per passenger-kilometer (g CO₂e/passenger-km), adjusted by occupancy where applicable.
+                        </p>
+                    </div>
+
+                    <!-- Emission Factors Grid Table -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-[11px]">
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Petrol car</span>
+                                <span class="font-mono-num font-bold text-rose-600">190 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Standard ICE petrol passenger sedan. Single occupant baseline, scalable by carpool occupancy.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Diesel car</span>
+                                <span class="font-mono-num font-bold text-orange-600">170 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Compression-ignition diesel engine with higher fuel economy, higher NOx/tailpipe soot.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Electric car</span>
+                                <span class="font-mono-num font-bold text-sky-600">50 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Well-to-wheel generation estimate based on regional electrical grid generation composition.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Motorcycle</span>
+                                <span class="font-mono-num font-bold text-amber-600">100 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">4-stroke commuter motorcycle / petrol scooter with single rider operational load.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Public Transit Bus</span>
+                                <span class="font-mono-num font-bold text-blue-600">40 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Municipal transit bus based on standard average transit occupancy of 25–30 passengers.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Suburban Rail / Metro</span>
+                                <span class="font-mono-num font-bold text-teal-600">30 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Electric commuter rail / metro with high commuter load factor and regenerative braking.</p>
+                        </div>
+
+                        <div class="bg-white p-3 rounded-xl border border-borderSlate space-y-1 sm:col-span-2">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-navyHeading">Bicycle (Human-Powered)</span>
+                                <span class="font-mono-num font-bold text-emerald-600">0 g/pkm</span>
+                            </div>
+                            <p class="text-mutedSlate text-[10px]">Active mobility with zero direct operational tailpipe greenhouse gas emissions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Real-World Conditions Disclaimer Note -->
+                    <div class="pt-2 border-t border-borderSlate/80 text-[11px] text-mutedSlate flex items-start space-x-2">
+                        <i data-lucide="info" class="w-4 h-4 text-corpBlue shrink-0 mt-0.5"></i>
+                        <p data-i18n="cmp_disclaimer">
+                            <strong>Note on Estimation Accuracy:</strong> These calculations are verified scientific estimates and are not presented as exact point measurements. Actual emissions generated will vary depending on vehicle curb weight, driving speed, severe traffic congestion, auxiliary air conditioning load, terrain elevation profile, local electricity grid generation mix, and exact passenger loading.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- How Eco Pulse Operates Section -->
+            <div class="bg-white border border-borderSlate rounded-3xl p-8 sm:p-12 space-y-8 shadow-2xs">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-corpBlue font-mono-num">System Architecture</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading" data-i18n="steps_heading">How Eco Pulse Operates</h2>
+                    <p class="text-xs sm:text-sm text-mutedSlate" data-i18n="steps_sub">A closed-loop framework for tracking, analyzing, and reducing community transportation emissions.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-lightGrey text-navyHeading font-mono-num font-bold text-lg flex items-center justify-center mx-auto border border-borderSlate">01</div>
+                        <h4 class="font-bold text-navyHeading text-base" data-i18n="step_1_title">Telemetry Ingestion</h4>
+                        <p class="text-xs text-mutedSlate leading-relaxed" data-i18n="step_1_desc">Input journey parameters, vehicle specifications, distance, and occupancy factors via our high-speed calculator.</p>
+                    </div>
+                    <div class="text-center space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-lightGrey text-navyHeading font-mono-num font-bold text-lg flex items-center justify-center mx-auto border border-borderSlate">02</div>
+                        <h4 class="font-bold text-navyHeading text-base" data-i18n="step_2_title">Factor Synthesis</h4>
+                        <p class="text-xs text-mutedSlate leading-relaxed" data-i18n="step_2_desc">Deterministic emission factors translate passenger-kilometers into accurate, verifiable carbon intensities.</p>
+                    </div>
+                    <div class="text-center space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-lightGrey text-navyHeading font-mono-num font-bold text-lg flex items-center justify-center mx-auto border border-borderSlate">03</div>
+                        <h4 class="font-bold text-navyHeading text-base" data-i18n="step_3_title">Community Pulse Action</h4>
+                        <p class="text-xs text-mutedSlate leading-relaxed" data-i18n="step_3_desc">Execute recommendations and leverage area chat networks to transition single-occupancy commutes into green rides.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ============================================================= -->
+        <!-- 2. CALCULATOR VIEW -->
+        <!-- ============================================================= -->
+        <section id="view-calculator" class="hidden space-y-8">
+            <div class="max-w-3xl mx-auto bg-white border border-borderSlate rounded-3xl p-6 sm:p-10 shadow-2xs space-y-8">
+                
+                <div class="border-b border-borderSlate pb-4 space-y-1">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-extrabold text-navyHeading" data-i18n="calc_heading">Transportation Emission Calculator</h2>
+                        <span class="text-[11px] font-mono-num bg-blueTint text-corpBlueDark px-2.5 py-1 rounded-md border border-blueBorder font-semibold">Formula: km × Factor / Pax</span>
+                    </div>
+                    <p class="text-xs text-mutedSlate" data-i18n="calc_sub">Accurately calculate single journey or recurring transit emissions using verified regional factor standards.</p>
+                </div>
+
+                <!-- Quick Commute Presets -->
+                <div class="bg-lightGrey border border-borderSlate p-4 rounded-2xl space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-navyHeading uppercase tracking-wider font-mono-num" data-i18n="calc_presets_label">Quick Transit Presets:</span>
+                        <span class="text-[10px] text-mutedSlate">Click to auto-populate</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="applyPreset('Andheri Station', 'Churchgate', 22, 'Metro or local train', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">Suburban Train (22 km)</button>
+                        <button type="button" onclick="applyPreset('Bandra Kurla Complex', 'Worli Hub', 14, 'Bus', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">BEST Electric Bus (14 km)</button>
+                        <button type="button" onclick="applyPreset('Hinjawadi Phase 1', 'Baner', 9, 'Electric two-wheeler', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">E-Scooter Commute (9 km)</button>
+                        <button type="button" onclick="applyPreset('Powai Lake', 'BKC Office', 16, 'Petrol car', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">Solo Sedan (16 km)</button>
+                        <button type="button" onclick="applyPreset('Greenway Park', 'Local Market', 2.5, 'Walking', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">Walking / Pedestrian (2.5 km)</button>
+                        <button type="button" onclick="applyPreset('North Avenue', 'Sector 4', 5, 'Bicycle', 1)" class="px-3 py-1.5 bg-white border border-borderSlate rounded-lg text-xs font-semibold hover:border-corpBlue text-navyHeading transition-all shadow-2xs">Bicycle Track (5 km)</button>
+                    </div>
+                </div>
+
+                <!-- Calculator Form -->
+                <form id="emissionForm" onsubmit="handleCalculation(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        
+                        <!-- Origin Location -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_start_loc">Origin Location</label>
+                            <input type="text" id="startLoc" placeholder="e.g. Andheri Station" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all" required>
+                        </div>
+
+                        <!-- Destination -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_end_loc">Destination</label>
+                            <input type="text" id="endLoc" placeholder="e.g. Bandra Kurla Complex" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all" required>
+                        </div>
+
+                        <!-- Modal Transit Category -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_mode">Modal Transit Category</label>
+                            <select id="transportMode" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all cursor-pointer font-medium">
+                                <option value="Metro or local train">Metro / Suburban Local Train (0.03 kg CO₂e/pkm)</option>
+                                <option value="Bus">Public Transit Bus (0.04 kg CO₂e/pkm)</option>
+                                <option value="Electric car">Electric Passenger Vehicle (0.05 kg CO₂e/km)</option>
+                                <option value="Electric two-wheeler">Electric Two-Wheeler / E-Bike (0.02 kg CO₂e/km)</option>
+                                <option value="Petrol motorcycle or scooter">Petrol Motorcycle / Scooter (0.10 kg CO₂e/km)</option>
+                                <option value="Petrol car">Petrol Internal Combustion Car (0.19 kg CO₂e/km)</option>
+                                <option value="Diesel car">Diesel Passenger Vehicle (0.17 kg CO₂e/km)</option>
+                                <option value="Auto-rickshaw">Auto-Rickshaw / Micro-Cab (0.09 kg CO₂e/km)</option>
+                                <option value="Intercity train">Intercity Express Rail (0.02 kg CO₂e/pkm)</option>
+                                <option value="Bicycle">Bicycle / Human-Powered (0.00 kg CO₂e/km)</option>
+                                <option value="Walking">Walking / Pedestrian (0.00 kg CO₂e/km)</option>
+                            </select>
+                        </div>
+
+                        <!-- Distance (Kilometers) -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_distance">Distance (Kilometers)</label>
+                            <input type="number" step="0.1" min="0.1" id="distance" placeholder="Distance in km" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-mono-num" required>
+                        </div>
+
+                        <!-- Number of Trips -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_trips">Trip Multiplier (e.g. Return = 2)</label>
+                            <input type="number" min="1" value="1" id="numTrips" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-mono-num" required>
+                        </div>
+
+                        <!-- Vehicle Occupancy -->
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_passengers">Vehicle Occupancy (Passengers)</label>
+                            <input type="number" min="1" value="1" id="passengers" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-mono-num" required>
+                        </div>
+
+                    </div>
+
+                    <!-- Travel Date & Notes -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_date">Journey Date</label>
+                            <input type="date" id="travelDate" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all font-mono-num">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block text-xs font-bold text-navyHeading uppercase tracking-wider" data-i18n="label_desc">Trip Purpose / Route Notes</label>
+                            <input type="text" id="tripDesc" placeholder="e.g. Daily office commute" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end space-x-4 pt-4 border-t border-borderSlate">
+                        <button type="submit" class="bg-navyHeading hover:bg-navyDark text-white font-semibold px-8 py-3.5 rounded-xl shadow-xs transition-all text-sm flex items-center space-x-2">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 text-corpBlue"></i>
+                            <span data-i18n="btn_calc_submit">Calculate & Save Journey</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Calculation Result Box with Professional Blue Accents -->
+                <div id="calculationResultBox" class="hidden bg-navyDark text-white p-6 rounded-2xl space-y-4 shadow-md border border-navySub">
+                    <div class="flex items-center justify-between border-b border-navySub pb-3">
+                        <span class="text-xs uppercase font-bold tracking-wider text-pulseSky font-mono-num" data-i18n="res_heading">Telemetry Synthesis</span>
+                        <span id="resModeBadge" class="text-xs bg-navySub px-3 py-1 rounded-md font-semibold text-slate-200">Local Train</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div>
+                            <span class="text-xs text-slate-400 block" data-i18n="res_emissions">Estimated Emissions</span>
+                            <span id="resEmissionsVal" class="text-3xl font-extrabold text-white mt-1 block font-mono-num">0.00 <span class="text-xs font-normal text-slate-400 font-sans">kg CO₂e</span></span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block" data-i18n="res_distance">Total Distance</span>
+                            <span id="resDistanceVal" class="text-3xl font-extrabold text-white mt-1 block font-mono-num">0 <span class="text-xs font-normal text-slate-400 font-sans">km</span></span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="text-xs text-slate-400 block" data-i18n="res_factor">Intensity Factor</span>
+                            <span id="resFactorVal" class="text-lg font-bold text-slate-200 mt-1 block font-mono-num">0.03 kg/km</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400 pt-3 border-t border-navySub flex items-center justify-between">
+                        <span data-i18n="res_note">Journey telemetry logged to memory. Open Dashboard to view trends.</span>
+                        <button onclick="switchView('dashboard')" class="text-pulseSky hover:underline font-semibold flex items-center space-x-1" data-i18n="res_goto_dash">
+                            <span>Open Dashboard</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ============================================================= -->
+        <!-- 3. DASHBOARD VIEW (With Professional Blue Pulse Indicators) -->
+        <!-- ============================================================= -->
+        <section id="view-dashboard" class="hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-corpBlue animate-pulse-halo-blue"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-corpBlue font-mono-num">Living Environmental Pulse</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading" data-i18n="dash_heading">Carbon Pulse Dashboard</h2>
+                    <p class="text-xs sm:text-sm text-mutedSlate" data-i18n="dash_sub">Personalized analytics and transportation emission summaries based on active records.</p>
+                </div>
+                <div class="flex items-center space-x-2.5">
+                    <button onclick="handleLoadDataClick()" class="bg-blueTint hover:bg-blue-100 text-corpBlueDark border border-blueBorder px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 shadow-2xs">
+                        <i data-lucide="database" class="w-3.5 h-3.5 text-corpBlue"></i>
+                        <span data-i18n="btn_load_data">Load Data</span>
+                    </button>
+                    <button onclick="switchView('calculator')" class="bg-navyHeading hover:bg-navyDark text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 shadow-xs">
+                        <i data-lucide="plus" class="w-3.5 h-3.5 text-pulseSky"></i>
+                        <span data-i18n="dash_add_trip">Log Journey</span>
+                    </button>
+                    <button onclick="exportTripsCSV()" class="bg-white hover:bg-lightGrey text-navyHeading border border-borderSlate px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-1.5 shadow-2xs" title="Export CSV for SQLite/MySQL backend audit">
+                        <i data-lucide="download" class="w-3.5 h-3.5 text-corpBlue"></i>
+                        <span>Export CSV</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- KPI Metric Cards with Subtle Blue Pulse Indicators -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Metric 1: Total Net Emissions -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-2 hover:border-slate-300 transition-all relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-mutedSlate uppercase tracking-wider" data-i18n="kpi_total_emissions">Total Net Emissions</span>
+                        <!-- Dynamic Pulse Dot on Metric -->
+                        <span class="inline-flex items-center space-x-1 text-[10px] text-corpBlue font-mono-num font-semibold" title="Live pulse updated">
+                            <span class="w-2 h-2 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                            <span>Live Pulse</span>
+                        </span>
+                    </div>
+                    <div class="flex items-baseline space-x-1.5">
+                        <span id="kpiEmissions" class="text-3xl font-extrabold text-navyHeading font-mono-num">0.00</span>
+                        <span class="text-xs text-mutedSlate font-semibold">kg CO₂e</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate block" data-i18n="kpi_emissions_sub">Across all logged journeys</span>
+                </div>
+
+                <!-- Metric 2: Total Travel Distance -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-2 hover:border-slate-300 transition-all relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-mutedSlate uppercase tracking-wider" data-i18n="kpi_total_distance">Total Travel Distance</span>
+                        <span class="inline-flex items-center space-x-1 text-[10px] text-corpBlue font-mono-num font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-pulseCyan animate-subtle-pulse"></span>
+                            <span>km sync</span>
+                        </span>
+                    </div>
+                    <div class="flex items-baseline space-x-1.5">
+                        <span id="kpiDistance" class="text-3xl font-extrabold text-navyHeading font-mono-num">0</span>
+                        <span class="text-xs text-mutedSlate font-semibold">km</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate block" data-i18n="kpi_distance_sub">Cumulative commute distance</span>
+                </div>
+
+                <!-- Metric 3: Emission Intensity -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-2 hover:border-slate-300 transition-all relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-mutedSlate uppercase tracking-wider" data-i18n="kpi_avg_intensity">Emission Intensity</span>
+                        <span class="inline-flex items-center space-x-1 text-[10px] text-corpBlue font-mono-num font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-pulseSky animate-subtle-pulse"></span>
+                            <span>Index</span>
+                        </span>
+                    </div>
+                    <div class="flex items-baseline space-x-1.5">
+                        <span id="kpiIntensity" class="text-3xl font-extrabold text-navyHeading font-mono-num">0.00</span>
+                        <span class="text-xs text-mutedSlate font-semibold">kg CO₂e/km</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate block" data-i18n="kpi_intensity_sub">Efficiency index per km</span>
+                </div>
+
+                <!-- Metric 4: Dominant Mode -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-2 hover:border-slate-300 transition-all relative overflow-hidden">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-mutedSlate uppercase tracking-wider" data-i18n="kpi_frequent_mode">Dominant Mode</span>
+                        <span class="inline-flex items-center space-x-1 text-[10px] text-navyHeading font-mono-num font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-navyHeading animate-subtle-pulse"></span>
+                            <span>Modal</span>
+                        </span>
+                    </div>
+                    <div class="pt-1">
+                        <span id="kpiTopMode" class="text-xl font-extrabold text-corpBlue truncate block">None</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate block" data-i18n="kpi_mode_sub">Highest trip frequency</span>
+                </div>
+
+            </div>
+
+            <!-- Weekly Carbon Ceiling Tracker -->
+            <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-3.5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-navyHeading text-base" data-i18n="goal_heading">Weekly Carbon Ceiling (Target: 30 kg CO₂e)</h3>
+                        <p class="text-xs text-mutedSlate" data-i18n="goal_sub">Aligned with urban low-carbon mobility limits.</p>
+                    </div>
+                    <span id="goalPercentageText" class="text-sm font-bold text-navyHeading font-mono-num">0% of limit</span>
+                </div>
+                <div class="w-full bg-lightGrey rounded-full h-3 overflow-hidden border border-borderSlate">
+                    <div id="goalProgressBar" class="bg-gradient-to-r from-corpBlueDark to-corpBlue h-3 rounded-full transition-all duration-700" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Chart.js Analytics Grid in Professional Blue Theme -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Trend Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                            <h3 class="font-bold text-navyHeading text-base" data-i18n="chart_trend_title">Carbon Pulse Trajectory</h3>
+                        </div>
+                        <span class="text-[10px] font-mono-num text-mutedSlate">kg CO₂e / Journey</span>
+                    </div>
+                    <div class="h-72 relative">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Mode Breakdown Chart -->
+                <div class="bg-white p-6 rounded-2xl border border-borderSlate shadow-2xs space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-pulseCyan animate-subtle-pulse"></span>
+                            <h3 class="font-bold text-navyHeading text-base" data-i18n="chart_mode_title">Emissions by Transit Modality</h3>
+                        </div>
+                        <span class="text-[10px] font-mono-num text-mutedSlate">Modal Share</span>
+                    </div>
+                    <div class="h-72 relative flex items-center justify-center">
+                        <canvas id="modeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ============================================================= -->
+        <!-- 4. TRIP HISTORY VIEW -->
+        <!-- ============================================================= -->
+        <section id="view-trips" class="hidden space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading" data-i18n="trips_heading">Journey Management & History</h2>
+                    <p class="text-xs sm:text-sm text-mutedSlate" data-i18n="trips_sub">Filter, inspect, or manage all logged transportation records.</p>
+                </div>
+                <div class="flex items-center space-x-2.5">
+                    <button onclick="handleLoadDataClick()" class="bg-blueTint hover:bg-blue-100 text-corpBlueDark border border-blueBorder px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shadow-2xs">
+                        <i data-lucide="database" class="w-3.5 h-3.5 text-corpBlue"></i>
+                        <span data-i18n="btn_load_data">Load Data</span>
+                    </button>
+                    <button onclick="switchView('calculator')" class="bg-navyHeading hover:bg-navyDark text-white px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center space-x-1.5 shadow-xs">
+                        <i data-lucide="plus" class="w-3.5 h-3.5 text-pulseSky"></i>
+                        <span data-i18n="dash_add_trip">Log Journey</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="bg-white p-4 rounded-2xl border border-borderSlate shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <input type="text" id="tripSearch" oninput="renderTripsTable()" placeholder="Search route, location, or notes..." class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40">
+                </div>
+                <div>
+                    <select id="filterMode" onchange="renderTripsTable()" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-2.5 text-xs text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 cursor-pointer">
+                        <option value="" data-i18n="filter_all_modes">All Transit Modes</option>
+                        <option value="Metro or local train">Metro / Local Train</option>
+                        <option value="Bus">Public Bus</option>
+                        <option value="Electric car">Electric Car</option>
+                        <option value="Electric two-wheeler">Electric Two-Wheeler</option>
+                        <option value="Petrol motorcycle or scooter">Petrol Motorcycle</option>
+                        <option value="Petrol car">Petrol Car</option>
+                        <option value="Diesel car">Diesel Car</option>
+                        <option value="Auto-rickshaw">Auto-Rickshaw</option>
+                        <option value="Bicycle">Bicycle</option>
+                        <option value="Walking">Walking</option>
+                    </select>
+                </div>
+                <div class="flex items-center justify-end">
+                    <span id="tripCountBadge" class="text-xs font-mono-num font-bold text-mutedSlate bg-lightGrey px-3 py-2 rounded-xl border border-borderSlate">0 Records Active</span>
+                </div>
+            </div>
+
+            <!-- Table of Trips -->
+            <div class="bg-white border border-borderSlate rounded-2xl shadow-2xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-lightGrey border-b border-borderSlate text-[11px] uppercase tracking-wider text-mutedSlate font-semibold">
+                                <th class="p-4" data-i18n="th_date">Date</th>
+                                <th class="p-4" data-i18n="th_route">Route & Description</th>
+                                <th class="p-4" data-i18n="th_mode">Transit Mode</th>
+                                <th class="p-4" data-i18n="th_distance">Distance</th>
+                                <th class="p-4" data-i18n="th_emissions">Emissions</th>
+                                <th class="p-4 text-right" data-i18n="th_actions">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tripsTableBody" class="divide-y divide-borderSlate text-xs text-navyHeading">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State -->
+                <div id="tripsEmptyState" class="hidden p-12 text-center space-y-3">
+                    <div class="w-12 h-12 bg-lightGrey text-mutedSlate rounded-full flex items-center justify-center mx-auto">
+                        <i data-lucide="database" class="w-6 h-6"></i>
+                    </div>
+                    <p class="text-sm font-bold text-navyHeading" data-i18n="empty_trips_title">No journeys recorded yet.</p>
+                    <p class="text-xs text-mutedSlate" data-i18n="empty_trips_desc">Use the calculator or click "Load Data" above to instantly populate transit records.</p>
+                    <button onclick="handleLoadDataClick()" class="mt-2 bg-corpBlue hover:bg-corpBlueDark text-white font-semibold text-xs px-4 py-2 rounded-xl transition-all shadow-xs">
+                        <span data-i18n="btn_load_data">Load Data</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================================= -->
+        <!-- 5. RECOMMENDATIONS VIEW -->
+        <!-- ============================================================= -->
+        <section id="view-recommendations" class="hidden space-y-8">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-corpBlue animate-subtle-pulse"></span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-corpBlue font-mono-num">Decarbonization Engine</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading" data-i18n="rec_heading">Sustainable Transit Insights</h2>
+                <p class="text-xs sm:text-sm text-mutedSlate" data-i18n="rec_sub">Prioritized modal alternatives ranked by emission mitigation potential and commuting feasibility.</p>
+            </div>
+
+            <!-- Priority Recommendations Cards -->
+            <div id="recommendationsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+
+        <!-- ============================================================= -->
+        <!-- 6. COMMUNITY CHAT GROUP (AREA-BASED) -->
+        <!-- ============================================================= -->
+        <section id="view-community" class="hidden space-y-8">
+            
+            <!-- Section Header & Area Selector -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-corpBlue animate-pulse-halo-blue"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-corpBlue font-mono-num">Hyperlocal Commute Network</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-navyHeading" data-i18n="comm_heading">Area Community Chat Group</h2>
+                    <p class="text-xs sm:text-sm text-mutedSlate" data-i18n="comm_sub">Connect directly with residents in your local area to coordinate carpools, share transit updates, and cut emissions together.</p>
+                </div>
+
+                <!-- Region / Area Switcher Dropdown in Corporate Blue Theme -->
+                <div class="flex items-center space-x-3 bg-white p-2.5 rounded-2xl border border-borderSlate shadow-2xs">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-corpBlue"></i>
+                    <div class="text-xs">
+                        <label class="block text-[10px] text-mutedSlate font-semibold uppercase">Current Region:</label>
+                        <select id="chatAreaSelect" onchange="handleAreaChange(this.value)" class="font-bold text-navyHeading bg-transparent focus:outline-none cursor-pointer">
+                            <option value="mumbai">Mumbai Metropolitan (Central & Western)</option>
+                            <option value="pune">Pune Urban & IT Corridor (Hinjawadi/Baner)</option>
+                            <option value="bengaluru">Bengaluru Silicon Corridor (Whitefield/ORR)</option>
+                            <option value="delhincr">Delhi NCR & Gurugram Expressway</option>
+                            <option value="hyderabad">Hyderabad Cyberabad & Hitec City</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regional Environmental Snapshot -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono-num">
+                <div class="bg-white p-5 rounded-2xl border border-borderSlate shadow-2xs space-y-1">
+                    <span class="text-[11px] font-sans font-semibold text-mutedSlate uppercase" data-i18n="comm_active_neighbors">Active Neighbors in Region</span>
+                    <div class="flex items-baseline space-x-2">
+                        <span id="areaOnlineCount" class="text-2xl font-extrabold text-navyHeading">84</span>
+                        <span class="text-xs text-corpBlue font-sans font-semibold">● Online Now</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate font-sans block">Coordinating daily shared transit</span>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-borderSlate shadow-2xs space-y-1">
+                    <span class="text-[11px] font-sans font-semibold text-mutedSlate uppercase" data-i18n="comm_area_savings">Regional Carbon Avoided</span>
+                    <div class="flex items-baseline space-x-2">
+                        <span id="areaCarbonSaved" class="text-2xl font-extrabold text-corpBlue">5,280</span>
+                        <span class="text-xs text-mutedSlate font-sans">kg CO₂e</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate font-sans block">This month via public transit & carpools</span>
+                </div>
+                <div class="bg-white p-5 rounded-2xl border border-borderSlate shadow-2xs space-y-1">
+                    <span class="text-[11px] font-sans font-semibold text-mutedSlate uppercase" data-i18n="comm_zone_rank">Regional Sustainability Rank</span>
+                    <div class="flex items-baseline space-x-2">
+                        <span id="areaRank" class="text-2xl font-extrabold text-pulseCyan">#1 District</span>
+                        <span class="text-xs text-mutedSlate font-sans">of 12 zones</span>
+                    </div>
+                    <span class="text-[11px] text-mutedSlate font-sans block">Leading in local rail and electric buses</span>
+                </div>
+            </div>
+
+            <!-- Main Interactive Area Chat Container in Professional Blue Theme -->
+            <div class="bg-white border border-borderSlate rounded-3xl shadow-2xs overflow-hidden flex flex-col h-[560px]">
+                
+                <!-- Chat Group Header in Dark Navy with Cyan Indicator -->
+                <div class="bg-navyDark text-white px-6 py-4 flex items-center justify-between border-b border-navySub">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-corpBlue/20 text-pulseSky border border-corpBlue/40 flex items-center justify-center font-bold">
+                            <i data-lucide="message-square" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 id="chatGroupName" class="font-bold text-sm sm:text-base font-heading">Mumbai Metropolitan Commuters</h3>
+                                <span class="bg-corpBlue/20 text-pulseSky text-[10px] font-mono-num px-2 py-0.5 rounded border border-corpBlue/40 font-semibold">Area Verified</span>
+                            </div>
+                            <span class="text-xs text-slate-400" id="chatSubtext">Channel #general-commute • Rapid Transit & Carpooling</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="insertQuickChat('Anyone carpooling to BKC tomorrow morning at 8:45 AM?')" class="hidden sm:inline text-[11px] bg-navySub hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+                            + Carpool Prompt
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages Feed (Scrollable) -->
+                <div id="areaChatFeed" class="flex-grow overflow-y-auto p-6 space-y-4 bg-offWhite">
+                    <!-- Populated dynamically via JS based on selected area -->
+                </div>
+
+                <!-- Quick Prompt Chips -->
+                <div class="px-6 py-2 bg-white border-t border-borderSlate flex items-center space-x-2 overflow-x-auto text-xs text-slate-600">
+                    <span class="text-[10px] font-bold text-mutedSlate uppercase shrink-0 font-mono-num">Quick Send:</span>
+                    <button onclick="insertQuickChat('Western Line local trains running on normal 3-min frequency today.')" class="shrink-0 px-2.5 py-1 bg-lightGrey hover:bg-slate-200 rounded-lg text-[11px] transition-colors">🚆 Local train on schedule</button>
+                    <button onclick="insertQuickChat('2 seats available in electric carpool leaving Andheri at 9:00 AM.')" class="shrink-0 px-2.5 py-1 bg-lightGrey hover:bg-slate-200 rounded-lg text-[11px] transition-colors">🚗 2 EV carpool seats open</button>
+                    <button onclick="insertQuickChat('New sheltered bicycle racks installed near Station Gate 3.')" class="shrink-0 px-2.5 py-1 bg-lightGrey hover:bg-slate-200 rounded-lg text-[11px] transition-colors">🚲 Cycle rack update</button>
+                </div>
+
+                <!-- Chat Input Form -->
+                <form onsubmit="handleSendAreaChat(event)" class="p-4 bg-white border-t border-borderSlate flex items-center space-x-3">
+                    <div class="relative flex-grow">
+                        <input type="text" id="areaChatInput" placeholder="Message area residents in this region..." class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm text-navyHeading focus:outline-none focus:ring-2 focus:ring-corpBlue/40 transition-all pr-10" required>
+                    </div>
+                    <button type="submit" class="bg-navyHeading hover:bg-navyDark text-white font-semibold px-5 py-3 rounded-xl shadow-xs transition-all flex items-center space-x-1.5 text-xs">
+                        <span>Send</span>
+                        <i data-lucide="send" class="w-3.5 h-3.5 text-pulseSky"></i>
+                    </button>
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer in Professional Corporate Palette -->
+    <footer class="bg-white border-t border-borderSlate mt-16 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-mutedSlate">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-navyDark text-corpBlue flex items-center justify-center font-bold">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-extrabold text-navyHeading text-sm font-heading">Eco<span class="text-corpBlue">Pulse</span></span> &copy; 2026. <span data-i18n="footer_rights">All rights reserved. Enterprise Carbon Telemetry Network.</span>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center space-x-6">
+                <button onclick="openPrivacyModal()" class="hover:text-navyHeading transition-all" data-i18n="footer_privacy">Privacy & Telemetry Protocol</button>
+                <button onclick="openHelpModal()" class="hover:text-navyHeading transition-all" data-i18n="footer_help">Documentation</button>
+                <button onclick="openAuthModal()" class="hover:text-navyHeading transition-all" data-i18n="footer_contact">Resident Portal</button>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Authentication / Resident Account Modal -->
+    <div id="authModal" class="hidden fixed inset-0 z-50 bg-navyDark/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl relative border border-borderSlate">
+            <div class="flex items-center justify-between border-b border-borderSlate pb-4">
+                <div>
+                    <h3 class="text-xl font-bold text-navyHeading font-heading" data-i18n="auth_modal_title">Resident Account Sign In</h3>
+                    <span class="text-xs text-mutedSlate">Connect to your municipal telemetry and community chat</span>
+                </div>
+                <button onclick="closeAuthModal()" class="text-mutedSlate hover:text-navyHeading text-xl font-bold">&times;</button>
+            </div>
+            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-navyHeading uppercase" data-i18n="auth_email">Resident Email</label>
+                    <input type="email" id="authEmail" placeholder="resident@ecopulse.network" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-corpBlue/40" required>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-navyHeading uppercase">Regional Zone</label>
+                    <select id="authZone" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-corpBlue/40 cursor-pointer">
+                        <option value="mumbai">Mumbai Metropolitan (Central & Western)</option>
+                        <option value="pune">Pune Urban & IT Corridor (Hinjawadi/Baner)</option>
+                        <option value="bengaluru">Bengaluru Silicon Corridor (Whitefield/ORR)</option>
+                        <option value="delhincr">Delhi NCR & Gurugram Expressway</option>
+                        <option value="hyderabad">Hyderabad Cyberabad & Hitec City</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold text-navyHeading uppercase" data-i18n="auth_pass">Password</label>
+                    <input type="password" id="authPass" placeholder="••••••••" class="w-full bg-lightGrey border border-borderSlate rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-corpBlue/40" required>
+                </div>
+                <button type="submit" class="w-full py-3 bg-navyHeading hover:bg-navyDark text-white rounded-xl font-semibold text-xs transition-all shadow-sm" data-i18n="auth_submit">Sign In / Register</button>
+            </form>
+            <div class="text-[11px] text-mutedSlate text-center" data-i18n="auth_note">ISO-27001 encrypted session management with isolated local area tokens.</div>
+        </div>
+    </div>
+
+    <!-- Privacy Protocol Modal -->
+    <div id="privacyModal" class="hidden fixed inset-0 z-50 bg-navyDark/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative border border-borderSlate">
+            <div class="flex items-center justify-between border-b border-borderSlate pb-4">
+                <h3 class="text-xl font-bold text-navyHeading font-heading" data-i18n="privacy_title">Privacy & Telemetry Protocol</h3>
+                <button onclick="closePrivacyModal()" class="text-mutedSlate hover:text-navyHeading text-xl font-bold">&times;</button>
+            </div>
+            <div class="space-y-3 text-xs text-mutedSlate leading-relaxed">
+                <p data-i18n="privacy_p1">Eco Pulse exclusively synthesizes transportation emissions data to promote sustainable transit. Precise route coordinates are obfuscated to protect resident privacy.</p>
+                <p data-i18n="privacy_p2">Area chat groups only identify residents by opt-in aliases. Telemetry records loaded into the active session remain within client memory.</p>
+            </div>
+            <button onclick="closePrivacyModal()" class="w-full py-3 bg-navyHeading text-white rounded-xl font-semibold text-xs hover:bg-navyDark transition-all">Acknowledge</button>
+        </div>
+    </div>
+
+    <!-- Documentation Modal -->
+    <div id="helpModal" class="hidden fixed inset-0 z-50 bg-navyDark/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl relative border border-borderSlate">
+            <div class="flex items-center justify-between border-b border-borderSlate pb-4">
+                <h3 class="text-xl font-bold text-navyHeading font-heading" data-i18n="help_title">Eco Pulse Documentation</h3>
+                <button onclick="closeHelpModal()" class="text-mutedSlate hover:text-navyHeading text-xl font-bold">&times;</button>
+            </div>
+            <div class="space-y-3 text-xs text-mutedSlate leading-relaxed">
+                <p data-i18n="help_p1">Use the calculator to input daily commuting distances across 12+ transport modes. Regional factor hashes map distance to kilograms of CO₂ equivalent.</p>
+                <p data-i18n="help_p2">Click "Load Data" in the top bar, hero section, or dashboard to instantly hydrate multi-day realistic transit records.</p>
+                <p>Visit the "Community Chat" view to interact with residents in your specific zone and coordinate shared low-carbon travel.</p>
+            </div>
+            <button onclick="closeHelpModal()" class="w-full py-3 bg-navyHeading text-white rounded-xl font-semibold text-xs hover:bg-navyDark transition-all">Close</button>
+        </div>
+    </div>
+
+
+    <!-- ============================================================= -->
+    <!-- JAVASCRIPT APPLICATION CORE -->
+    <!-- ============================================================= -->
+    <script src="../js/app.js"></script>
+</body>
+</html>
